@@ -20,7 +20,7 @@ public class GamePlay : MonoBehaviour
         }
     }
     
-    public BallController Ball;
+    public IBallController Ball;
     public PlayerController Player;
 
     public Text ScoreLabel;
@@ -40,7 +40,11 @@ public class GamePlay : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        
+    }
+
+    private void Start()
+    {
+        Ball = FindObjectOfType<Zenject.SceneContext>().Container.Resolve<IBallController>();
         Reset();
     }
 
@@ -51,8 +55,8 @@ public class GamePlay : MonoBehaviour
         pos1.x = 0f;
         Player.transform.position = pos1;
 
-        Ball.transform.position = Vector3.zero;
-        Ball.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        Ball.SetPosition(Vector3.zero);
+        Ball.SetVelocity(Vector2.zero);
 
         ScoreLabel.text = GamePlay.Instance.Score.ToString();
         LivesLabel.text = GamePlay.Instance.Lives.ToString();
