@@ -44,7 +44,8 @@ public class GamePlay : MonoBehaviour
 
     private void Start()
     {
-        Ball = FindObjectOfType<Zenject.SceneContext>().Container.Resolve<IBallController>();
+        Zenject.SceneContext context = FindObjectOfType<Zenject.SceneContext>()
+        Ball = context.Container.Resolve<IBallController>(); // NOTE: this is a workaround only while GamePlay is not injected.
         Reset();
     }
 
