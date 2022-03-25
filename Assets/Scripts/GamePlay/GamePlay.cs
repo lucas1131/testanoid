@@ -20,15 +20,19 @@ public class GamePlay : MonoBehaviour
         }
     }
     
-    public IBallController Ball;
-    public PlayerController Player;
+    private IBallController _ball;
+    private IPlayerController _player;
 
     public Text ScoreLabel;
     public Text LivesLabel;
     public Text GetReadyLabel;
 
     public uint Score = 0;
-    public uint Lives = 3; // TODO: add config obj
+    private uint _lives;
+    public uint Lives {
+        get => _lives;
+        set => _lives = value;
+    }
 
     uint Briks = 4;
     private bool _gameOver = false;
@@ -44,31 +48,36 @@ public class GamePlay : MonoBehaviour
 
     private void Start()
     {
-        Zenject.SceneContext context = FindObjectOfType<Zenject.SceneContext>()
-        Ball = context.Container.Resolve<IBallController>(); // NOTE: this is a workaround only while GamePlay is not injected.
-        Reset();
+        // NOTE: this is a workaround only while GamePlay is not injected.
+        Zenject.SceneContext context = FindObjectOfType<Zenject.SceneContext>();
+        _ball = context.Container.Resolve<IBallController>(); 
+        IGameConfig config = context.Container.Resolve<IGameConfig>();
+        _player = context.Container.Resolve<IPlayerController>();
+
+        SetupGame(config);
     }
 
     public void Goal()
     {
         GetReadyLabel.enabled = true;
-        var pos1 = Player.transform.position;
+        
+        var pos1 = _player.GetPlayerPosition();
         pos1.x = 0f;
-        Player.transform.position = pos1;
+        _player.SetPlayerPosition(pos1);
 
-        Ball.SetPosition(Vector3.zero);
-        Ball.SetVelocity(Vector2.zero);
+        _ball.SetPosition(Vector3.zero);
+        _ball.SetVelocity(Vector2.zero);
 
         ScoreLabel.text = GamePlay.Instance.Score.ToString();
-        LivesLabel.text = GamePlay.Instance.Lives.ToString();
+        LivesLabel.text = GamePlay.Instance._lives.ToString();
 
         StartCoroutine(StartGame());
     }
 
-    private void Reset()
+    private void SetupGame(IGameConfig config)
     {
         Score = 0;
-        Lives = 3;
+        _lives = config.Lives;
         Briks = 4;
 
         Goal();
@@ -80,7 +89,7 @@ public class GamePlay : MonoBehaviour
 
         GetReadyLabel.enabled = false;
         _gameOver = false;
-        Ball.Kick();
+        _ball.Kick();
     }
 
     private void Update()
@@ -88,7 +97,7 @@ public class GamePlay : MonoBehaviour
 #if true //debug commands
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Lives = 0;
+            _lives = 0;
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
@@ -99,14 +108,14 @@ public class GamePlay : MonoBehaviour
         if (_gameOver) return;
 
         ScoreLabel.text = GamePlay.Instance.Score.ToString();
-        LivesLabel.text = GamePlay.Instance.Lives.ToString();
+        LivesLabel.text = GamePlay.Instance._lives.ToString();
 
         if (Score == Briks)
         {
             SceneManager.LoadScene("Win");
             _gameOver = true;
         }
-        else if (Lives == 0)
+        else if (_lives == 0)
         {
             SceneManager.LoadScene("Lose");
             _gameOver = true;
