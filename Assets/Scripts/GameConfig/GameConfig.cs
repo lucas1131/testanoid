@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameConfig")]
-public class GameConfig : ScriptableObject
+[ExecuteInEditMode]
+public class GameConfig : ScriptableObject, IGameConfig
 {
-    [Range(0.1f, 5f)] public float ballSpeed = 1f;
-    public uint lives = 3;
-    // [range(0f, 5f)] public float minStartingAngle = 0f;
-    // public float maxStartingAngle = 0f;
+    [SerializeField] [Range(1f, 10f)] private float _ballSpeed = 5f;
+    [SerializeField] [Range(1f, 10f)] private float _playerSpeed = 5f;
+    [SerializeField] private uint _lives = 3;
+
+    public float BallSpeed => _ballSpeed;
+    public float PlayerSpeed => _playerSpeed;
+    public uint Lives => _lives;
+
 }

@@ -5,24 +5,26 @@ public class BallController : IBallController
 {
     private Rigidbody2D _ball;
     private IBallPositioner _ballPositioner;
-    private float _speed;
+    private IGameConfig _gameConfig;
 
     [Inject]
-    public BallController(IBallRigidbodyGetter ballGetter, IBallPositioner ballPositioner, [InjectOptional] float speed=1f)
+    public BallController(IBallRigidbodyGetter ballGetter, 
+        IBallPositioner ballPositioner, 
+        IGameConfig gameConfig)
     {
         _ball = ballGetter.Ball;
         _ballPositioner = ballPositioner;
-        _speed = speed;
+        _gameConfig = gameConfig;
     }
     
     public void Kick()
     {
-        _ball.velocity = Random.insideUnitCircle * _speed;
+        _ball.velocity = Random.insideUnitCircle * _gameConfig.BallSpeed;
     }
 
     public void Move()
     {
-        _ball.velocity = _ball.velocity.normalized * _speed;
+        _ball.velocity = _ball.velocity.normalized * _gameConfig.BallSpeed;
     }
 
     public void SetVelocity(Vector2 velocity)

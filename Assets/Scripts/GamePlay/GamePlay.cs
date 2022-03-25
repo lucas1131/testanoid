@@ -75,7 +75,7 @@ public class GamePlay : MonoBehaviour
 
     private IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
         GetReadyLabel.enabled = false;
         _gameOver = false;
