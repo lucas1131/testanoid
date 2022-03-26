@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SCORE
   - LIVES
+  - WALL
   layers:
   - Default
   - TransparentFX
