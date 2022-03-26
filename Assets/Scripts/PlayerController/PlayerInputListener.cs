@@ -23,18 +23,6 @@ public class PlayerInputListener : MonoBehaviour, IPlayerInputListener
 		}
 	}
 
-#if true // For Debug commands to work
-
-	private IGamePlay _gamePlay;
-
-	[Inject]
-	private void Construct(IGamePlay gamePlay)
-	{
-		_gamePlay = gamePlay;
-	}
-
-#endif
-   
 	private void Start()
 	{
 		moveDirection = Vector2.zero;
@@ -54,16 +42,5 @@ public class PlayerInputListener : MonoBehaviour, IPlayerInputListener
         {
             MoveDirection = Vector2.zero;
         }
-
-#if true //debug commands
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            _gamePlay.Lose();
-        }
-        else if (Input.GetKeyDown(KeyCode.W))
-        {
-            _gamePlay.Win();
-        }
-#endif
     }
 }
