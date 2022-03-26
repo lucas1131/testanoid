@@ -11,6 +11,7 @@ public class GamePlay : IGamePlay
     private IPlayerController _player;
     private IGameConfig _config;
     private IGlobalCoroutineDispatcher _dispatcher;
+    private IScoreController _score;
 
     private uint _briks = 4;
 
@@ -19,8 +20,6 @@ public class GamePlay : IGamePlay
     private Text _getReadyText;
 
     private uint _lives;
-    private uint _score;
-    public uint Score => _score;
     private bool GameEnded => _lives == 0;
 
     private Action _onPlayerWin;
@@ -42,6 +41,7 @@ public class GamePlay : IGamePlay
         IPlayerController player, 
         IGameConfig config,
         IGlobalCoroutineDispatcher dispatcher,
+        IScoreController _score,
         [Inject(Id=GamePlayInstaller.GameTextsIds.Score)] Text scoreText, 
         [Inject(Id=GamePlayInstaller.GameTextsIds.Lives)] Text livesText, 
         [Inject(Id=GamePlayInstaller.GameTextsIds.Ready)] Text getReadyText)
@@ -80,10 +80,10 @@ public class GamePlay : IGamePlay
 
     public void IncrementScore()
     {
-        _score++;
+        _score.Score++;
         _scoreText.text = _score.ToString();
 
-        if(_score == _briks)
+        if(_score.Score == _briks)
         {
             Win();
         }
@@ -126,7 +126,7 @@ public class GamePlay : IGamePlay
     private void SetupGame(IGameConfig config)
     {
         _briks = 4;
-        _score = 0;
+        _score.Score = 0;
         _lives = config.Lives;
 
         _scoreText.text = _score.ToString();

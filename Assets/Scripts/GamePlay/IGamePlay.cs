@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public interface IGamePlay
 {
-	uint Score { get; }
     bool GameIsRunning { get; }
 
     void Goal();

@@ -4,18 +4,17 @@ using Zenject;
 
 public class TopScore : MonoBehaviour
 {
-    public Text Label;
-    private IGamePlay _gamePlay;
+    [SerializeField] private Text ScoreText;
+    private IScoreController _score;
 
 	[Inject]
-	private void Construct(IGamePlay gamePlay)
+	private void Construct(IScoreController score)
 	{
-		_gamePlay = gamePlay;
+		_score = score;
 	}
     
-    private void Awake()
+    private void Start()
     {
-    	// Debug.Log($"Top score: {_gamePlay.Score.ToString()}");
-        // Label.text += _gamePlay.Score.ToString();
+        ScoreText.text += _score.Score.ToString();
     }
 }
