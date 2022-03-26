@@ -13,6 +13,11 @@ public class Death : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+    	if(!_gamePlay.GameIsRunning)
+    	{
+    		return;
+    	}
+    	
     	_gamePlay.LoseLife();
     	_gamePlay.Goal();
     }

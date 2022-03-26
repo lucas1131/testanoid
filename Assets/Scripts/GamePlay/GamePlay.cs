@@ -21,7 +21,7 @@ public class GamePlay : IGamePlay
     private uint _lives;
     private uint _score;
     public uint Score => _score;
-    private bool PlayerLost => _lives == 0;
+    private bool GameEnded => _lives == 0;
 
     private Action _onPlayerWin;
     public Action OnPlayerWin {
@@ -35,6 +35,8 @@ public class GamePlay : IGamePlay
         set => _onPlayerLose = value;
     }
 
+    public bool GameIsRunning => !_getReadyText.enabled;
+
     public GamePlay(
         IBallController ball, 
         IPlayerController player, 
@@ -44,9 +46,6 @@ public class GamePlay : IGamePlay
         [Inject(Id=GamePlayInstaller.GameTextsIds.Lives)] Text livesText, 
         [Inject(Id=GamePlayInstaller.GameTextsIds.Ready)] Text getReadyText)
     {
-
-        Debug.Log($"Creating Gameplay");
-
         _ball = ball;
         _player = player;
         _config = config;
@@ -72,7 +71,8 @@ public class GamePlay : IGamePlay
         _scoreText.text = _score.ToString();
         _livesText.text = _lives.ToString();
 
-        if(!PlayerLost) 
+        Debug.Log($"Did player lose? {GameEnded}");
+        if(!GameEnded) 
         {
             _dispatcher.Dispatch(StartGame());
         }
@@ -93,6 +93,8 @@ public class GamePlay : IGamePlay
     {
         _lives--;
         _livesText.text = _lives.ToString();
+
+        Debug.Log("Losing a life");
 
         if(_lives == 0)
         {
@@ -129,6 +131,8 @@ public class GamePlay : IGamePlay
 
         _scoreText.text = _score.ToString();
         _livesText.text = _lives.ToString();
+
+        Debug.Log($"Setting up games with {_lives} lives");
 
         Goal();
     }

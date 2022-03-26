@@ -13,6 +13,11 @@ public class BrikController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+    	if(!_gamePlay.GameIsRunning)
+    	{
+    		return;
+    	}
+    	
     	_gamePlay.IncrementScore();
         Destroy(gameObject);
     }

@@ -14,6 +14,12 @@ public class DebugCommands : MonoBehaviour
 
 	private void Update()
 	{
+
+		if(!_gamePlay.GameIsRunning)
+		{
+			return;
+		}
+		
         if (Input.GetKeyDown(KeyCode.Q))
         {
             _gamePlay.Lose();
