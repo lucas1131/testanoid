@@ -18,40 +18,10 @@ public class GamePlay : IGamePlay
     private Text _livesText;
     private Text _getReadyText;
 
-
-    private uint _score;
-    private uint Score 
-    {
-        get => _score;
-        set 
-        {
-            if(_score != value)
-            {
-                _score = value;
-                if(_score == _briks)
-                {
-                    OnPlayerWin();
-                }
-            }
-        }
-    }
-
     private uint _lives;
-    private uint Lives 
-    {
-        get => _lives;
-        set 
-        {
-            if(_lives != value)
-            {
-                _lives = value;
-                if(_lives == 0)
-                {
-                    OnPlayerLose();
-                }
-            }
-        }
-    }
+    private uint _score;
+    public uint Score => _score;
+    private bool PlayerLost => _lives == 0;
 
     private Action _onPlayerWin;
     public Action OnPlayerWin {
@@ -85,9 +55,6 @@ public class GamePlay : IGamePlay
         _livesText = livesText;
         _getReadyText = getReadyText;
 
-        OnPlayerWin += Win;
-        OnPlayerLose += Lose;
-
         SetupGame(config);
     }
 
@@ -105,27 +72,52 @@ public class GamePlay : IGamePlay
         _scoreText.text = _score.ToString();
         _livesText.text = _lives.ToString();
 
-        _dispatcher.Dispatch(StartGame());
+        if(!PlayerLost) 
+        {
+            _dispatcher.Dispatch(StartGame());
+        }
     }
 
     public void IncrementScore()
     {
         _score++;
+        _scoreText.text = _score.ToString();
+
+        if(_score == _briks)
+        {
+            Win();
+        }
     }
 
     public void LoseLife()
     {
         _lives--;
+        _livesText.text = _lives.ToString();
+
+        if(_lives == 0)
+        {
+            Lose();
+        }
     }
-    
+
 
     public void Win()
     {
+        if(OnPlayerWin != null)
+        {
+            OnPlayerWin();
+        }
+
         SceneManager.LoadScene("Win");
     }
 
     public void Lose()
     {
+        if(OnPlayerLose != null)
+        {
+            OnPlayerLose();
+        }
+
         SceneManager.LoadScene("Lose");
     }
 
@@ -134,6 +126,9 @@ public class GamePlay : IGamePlay
         _briks = 4;
         _score = 0;
         _lives = config.Lives;
+
+        _scoreText.text = _score.ToString();
+        _livesText.text = _lives.ToString();
 
         Goal();
     }

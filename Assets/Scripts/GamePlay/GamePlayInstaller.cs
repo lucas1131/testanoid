@@ -41,7 +41,6 @@ public class GamePlayInstaller : MonoInstaller
 
     private void InstallGamePlay()
     {
-    	Debug.Log("Installing Gameplay");
     	Container.BindInterfacesTo<GamePlay>()
 			.FromNew()
 			.AsSingle()
