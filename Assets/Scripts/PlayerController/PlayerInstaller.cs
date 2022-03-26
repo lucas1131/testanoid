@@ -9,7 +9,6 @@ public class PlayerInstaller : MonoInstaller<PlayerInstaller>
 
 	public override void InstallBindings()
 	{
-		Debug.Log("Installing player");
 		Container.BindInterfacesTo<PlayerPresenter>()
 			.FromMethod((InjectContext context) => {
 				var playerObj = GameObject.Instantiate(playerPrefab, playerSpawnPoint.transform);

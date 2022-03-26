@@ -3,25 +3,27 @@ using Zenject;
 
 public class PlayerController : IPlayerController
 {
-    private Rigidbody2D player;
+    private Rigidbody2D _player;
     private IGameConfig _gameConfig;
     private IPlayerPositioner _playerPositioner;
 
     [Inject]
     public PlayerController(IPlayerRigidbodyGetter playerRigidbodyGetter, 
         IPlayerPositioner playerPositioner,
-        IPlayerInputListener inputListener, 
+        IPlayerInputListener inputListener,
+        IPlayerCollisionListener collisionListener,
         IGameConfig gameConfig)
     {
-        player = playerRigidbodyGetter.Player;
+        _player = playerRigidbodyGetter.Player;
         _playerPositioner = playerPositioner;
         inputListener.OnMovementDirectionChanged += Move;
+        collisionListener.OnPlayerCollisionEnter += WallCollisionHandler;
         _gameConfig = gameConfig;
     }
 
     public void Move(Vector2 direction)
     {
-        player.velocity = direction * _gameConfig.PlayerSpeed;
+        _player.velocity = direction * _gameConfig.PlayerSpeed;
     }
 
     public Vector3 GetPlayerPosition()
@@ -32,5 +34,13 @@ public class PlayerController : IPlayerController
     public void SetPlayerPosition(Vector3 position)
     {
         _playerPositioner.Position = position;
+    }
+
+    private void WallCollisionHandler(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("WALL")) 
+        {
+            _player.velocity = Vector2.zero;
+        }
     }
 }
