@@ -19,6 +19,7 @@ public class GamePlayInstaller : MonoInstaller
     {
     	InstallTexts();
     	InstallGamePlay();
+    	InstallScore();
     }
 
     private void InstallTexts()
@@ -45,5 +46,11 @@ public class GamePlayInstaller : MonoInstaller
 			.FromNew()
 			.AsSingle()
 			.NonLazy();
+    }
+
+    private void InstallScore()
+    {
+    	Container.BindInterfacesTo<ScoreController>()
+			.AsSingle();
     }
 }
