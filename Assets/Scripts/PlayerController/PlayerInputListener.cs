@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class PlayerInputListener : MonoBehaviour, IPlayerInputListener
 {
-	private Action<Vector2> onMovementDirectionChanged;
+	private Action<Vector2> _onMovementDirectionChanged;
 	public Action<Vector2> OnMovementDirectionChanged {
-		get => onMovementDirectionChanged;
-		set => onMovementDirectionChanged = value;
+		get => _onMovementDirectionChanged;
+		set => _onMovementDirectionChanged = value;
 	}
 
 	private Vector2 moveDirection;
@@ -14,9 +14,9 @@ public class PlayerInputListener : MonoBehaviour, IPlayerInputListener
 	{
 		get => moveDirection;
 		set {
-			if(moveDirection != value && onMovementDirectionChanged != null)
+			if(moveDirection != value && _onMovementDirectionChanged != null)
 			{
-				onMovementDirectionChanged(value);
+				_onMovementDirectionChanged(value);
 			}
 			moveDirection = value;
 		}
