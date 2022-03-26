@@ -18,6 +18,7 @@ public class GamePlayInstaller : MonoInstaller
     public override void InstallBindings()
     {
     	InstallTexts();
+    	InstallGamePlay();
     }
 
     private void InstallTexts()
@@ -25,17 +26,25 @@ public class GamePlayInstaller : MonoInstaller
 		Container.Bind<Text>()
 			.WithId(GameTextsIds.Score)
 			.FromInstance(_scoreText)
-			.AsSingle();
+			.AsTransient();
 
 		Container.Bind<Text>()
 			.WithId(GameTextsIds.Lives)
 			.FromInstance(_livesText)
-			.AsSingle();
+			.AsTransient();
 
 		Container.Bind<Text>()
 			.WithId(GameTextsIds.Ready)
 			.FromInstance(_getReadyText)
-			.AsSingle();
+			.AsTransient();
+    }
 
+    private void InstallGamePlay()
+    {
+    	Debug.Log("Installing Gameplay");
+    	Container.BindInterfacesTo<GamePlay>()
+			.FromNew()
+			.AsSingle()
+			.NonLazy();
     }
 }

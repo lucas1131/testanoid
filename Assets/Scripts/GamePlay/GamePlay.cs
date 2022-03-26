@@ -13,7 +13,6 @@ public class GamePlay : IGamePlay
     private IGlobalCoroutineDispatcher _dispatcher;
 
     private uint _briks = 4;
-    private bool _gameOver = false;
 
     private Text _scoreText;
     private Text _livesText;
@@ -71,10 +70,13 @@ public class GamePlay : IGamePlay
         IPlayerController player, 
         IGameConfig config,
         IGlobalCoroutineDispatcher dispatcher,
-        [Inject(Id="score")] Text scoreText, 
-        [Inject(Id="lives")] Text livesText, 
-        [Inject(Id="ready")] Text getReadyText)
+        [Inject(Id=GamePlayInstaller.GameTextsIds.Score)] Text scoreText, 
+        [Inject(Id=GamePlayInstaller.GameTextsIds.Lives)] Text livesText, 
+        [Inject(Id=GamePlayInstaller.GameTextsIds.Ready)] Text getReadyText)
     {
+
+        Debug.Log($"Creating Gameplay");
+
         _ball = ball;
         _player = player;
         _config = config;
@@ -120,13 +122,11 @@ public class GamePlay : IGamePlay
     public void Win()
     {
         SceneManager.LoadScene("Win");
-        _gameOver = true;
     }
 
     public void Lose()
     {
         SceneManager.LoadScene("Lose");
-        _gameOver = true;
     }
 
     private void SetupGame(IGameConfig config)
@@ -143,7 +143,6 @@ public class GamePlay : IGamePlay
         yield return new WaitForSeconds(1f);
 
         _getReadyText.enabled = false;
-        _gameOver = false;
         _ball.Kick();
     }
 }
