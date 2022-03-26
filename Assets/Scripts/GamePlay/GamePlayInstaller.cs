@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class GamePlayInstaller : MonoInstaller
+public class GamePlayInstaller : MonoInstaller<GamePlayInstaller>
 {
 	public enum GameTextsIds
 	{
@@ -18,8 +18,8 @@ public class GamePlayInstaller : MonoInstaller
     public override void InstallBindings()
     {
     	InstallTexts();
-    	InstallGamePlay();
     	InstallScore();
+    	InstallGamePlay();
     }
 
     private void InstallTexts()
@@ -39,6 +39,12 @@ public class GamePlayInstaller : MonoInstaller
 			.FromInstance(_getReadyText)
 			.AsTransient();
     }
+    
+    private void InstallScore()
+    {
+    	Container.BindInterfacesTo<ScoreController>()
+			.AsSingle();
+    }
 
     private void InstallGamePlay()
     {
@@ -46,11 +52,5 @@ public class GamePlayInstaller : MonoInstaller
 			.FromNew()
 			.AsSingle()
 			.NonLazy();
-    }
-
-    private void InstallScore()
-    {
-    	Container.BindInterfacesTo<ScoreController>()
-			.AsSingle();
     }
 }

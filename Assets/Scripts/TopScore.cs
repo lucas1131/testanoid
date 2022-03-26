@@ -11,9 +11,11 @@ public class TopScore : MonoBehaviour
 	private void Construct(IScoreController score)
 	{
 		_score = score;
+
+		UpdateScoreText();
 	}
     
-    private void Start()
+    private void UpdateScoreText()
     {
         ScoreText.text += _score.Score.ToString();
     }

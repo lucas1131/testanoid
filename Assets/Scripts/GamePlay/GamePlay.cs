@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public class GamePlay : IGamePlay
@@ -12,6 +12,8 @@ public class GamePlay : IGamePlay
     private IGameConfig _config;
     private IGlobalCoroutineDispatcher _dispatcher;
     private IScoreController _score;
+
+    private ZenjectSceneLoader _sceneLoader;
 
     private uint _briks = 4;
 
@@ -41,7 +43,8 @@ public class GamePlay : IGamePlay
         IPlayerController player, 
         IGameConfig config,
         IGlobalCoroutineDispatcher dispatcher,
-        IScoreController _score,
+        IScoreController score,
+        ZenjectSceneLoader sceneLoader,
         [Inject(Id=GamePlayInstaller.GameTextsIds.Score)] Text scoreText, 
         [Inject(Id=GamePlayInstaller.GameTextsIds.Lives)] Text livesText, 
         [Inject(Id=GamePlayInstaller.GameTextsIds.Ready)] Text getReadyText)
@@ -50,6 +53,8 @@ public class GamePlay : IGamePlay
         _player = player;
         _config = config;
         _dispatcher = dispatcher;
+        _score = score;
+        _sceneLoader = sceneLoader;
         _scoreText = scoreText;
         _livesText = livesText;
         _getReadyText = getReadyText;
@@ -71,7 +76,6 @@ public class GamePlay : IGamePlay
         _scoreText.text = _score.ToString();
         _livesText.text = _lives.ToString();
 
-        Debug.Log($"Did player lose? {GameEnded}");
         if(!GameEnded) 
         {
             _dispatcher.Dispatch(StartGame());
@@ -94,8 +98,6 @@ public class GamePlay : IGamePlay
         _lives--;
         _livesText.text = _lives.ToString();
 
-        Debug.Log("Losing a life");
-
         if(_lives == 0)
         {
             Lose();
@@ -110,7 +112,7 @@ public class GamePlay : IGamePlay
             OnPlayerWin();
         }
 
-        SceneManager.LoadScene("Win");
+        _sceneLoader.LoadScene("Win", LoadSceneMode.Single, BindScoreToNextScene);
     }
 
     public void Lose()
@@ -120,7 +122,7 @@ public class GamePlay : IGamePlay
             OnPlayerLose();
         }
 
-        SceneManager.LoadScene("Lose");
+        _sceneLoader.LoadScene("Lose", LoadSceneMode.Single, BindScoreToNextScene);
     }
 
     private void SetupGame(IGameConfig config)
@@ -132,8 +134,6 @@ public class GamePlay : IGamePlay
         _scoreText.text = _score.ToString();
         _livesText.text = _lives.ToString();
 
-        Debug.Log($"Setting up games with {_lives} lives");
-
         Goal();
     }
 
@@ -143,5 +143,10 @@ public class GamePlay : IGamePlay
 
         _getReadyText.enabled = false;
         _ball.Kick();
+    }
+
+    private void BindScoreToNextScene(DiContainer container)
+    {
+        container.Bind<IScoreController>().FromInstance(_score);
     }
 }
