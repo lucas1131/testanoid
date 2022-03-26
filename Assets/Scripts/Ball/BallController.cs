@@ -19,12 +19,9 @@ public class BallController : IBallController
     
     public void Kick()
     {
-        _ball.velocity = Random.insideUnitCircle * _gameConfig.BallSpeed;
-    }
-
-    public void Move()
-    {
-        _ball.velocity = _ball.velocity.normalized * _gameConfig.BallSpeed;
+        var direction = Random.insideUnitCircle.normalized;
+        var speed = Random.Range(_gameConfig.BallMinSpeed, _gameConfig.BallMaxSpeed);
+        _ball.velocity = direction * speed;
     }
 
     public void SetVelocity(Vector2 velocity)

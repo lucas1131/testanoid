@@ -1,6 +1,7 @@
 public interface IGameConfig
 {
-    float BallSpeed { get; }
+    float BallMaxSpeed { get; }
+    float BallMinSpeed { get; }
     float PlayerSpeed { get; }
     uint Lives { get; }
 }
