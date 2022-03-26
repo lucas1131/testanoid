@@ -165,7 +165,6 @@ GameObject:
   - component: {fileID: 4421547457167510}
   - component: {fileID: 2013758440}
   - component: {fileID: 2013758438}
-  - component: {fileID: 2013758439}
   m_Layer: 0
   m_Name: GameField
   m_TagString: WALL
@@ -232,22 +231,6 @@ EdgeCollider2D:
   - {x: 2.832075, y: -5.721356}
   - {x: 2.8222911, y: 4.9746366}
   - {x: -2.8087034, y: 4.991415}
---- !u!114 &2013758439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978087241310088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7548814b3d4d4a348f08f0b13ac286e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScoreLabel: {fileID: 0}
-  LivesLabel: {fileID: 0}
-  GetReadyLabel: {fileID: 0}
-  Score: 0
 --- !u!1 &4451055009857265664
 GameObject:
   m_ObjectHideFlags: 0

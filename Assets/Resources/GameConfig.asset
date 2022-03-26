@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e391c1d959b12b441916439b2129e7bb, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  _ballSpeed: 7.38
+  _ballMaxSpeed: 8
+  _ballMinSpeed: 3
   _playerSpeed: 5
   _lives: 3

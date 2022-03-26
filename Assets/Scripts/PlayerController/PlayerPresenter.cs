@@ -19,9 +19,6 @@ public class PlayerPresenter : MonoBehaviour, IPlayerRigidbodyGetter, IPlayerPos
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-    	if(collision.gameObject.CompareTag("WALL")) 
-        {
-            _player.velocity = Vector2.zero;
-        }
+    	OnPlayerCollisionEnter(collision);
     }
 }

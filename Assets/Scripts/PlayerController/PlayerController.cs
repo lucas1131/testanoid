@@ -8,7 +8,8 @@ public class PlayerController : IPlayerController
     private IPlayerPositioner _playerPositioner;
 
     [Inject]
-    public PlayerController(IPlayerRigidbodyGetter playerRigidbodyGetter, 
+    public PlayerController(
+        IPlayerRigidbodyGetter playerRigidbodyGetter, 
         IPlayerPositioner playerPositioner,
         IPlayerInputListener inputListener,
         IPlayerCollisionListener collisionListener,

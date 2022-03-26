@@ -1,65 +1,97 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
-public class GamePlay : MonoBehaviour
+public class GamePlay : IGamePlay
 {
-    private static GamePlay _instance;
-    public static GamePlay Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                var go = new GameObject("GamePlay");
-                _instance = go.AddComponent<GamePlay>();
-            }
-
-            return _instance;
-        }
-    }
-    
     private IBallController _ball;
     private IPlayerController _player;
+    private IGameConfig _config;
+    private IGlobalCoroutineDispatcher _dispatcher;
 
-    public Text ScoreLabel;
-    public Text LivesLabel;
-    public Text GetReadyLabel;
-
-    public uint Score = 0;
-    private uint _lives;
-    public uint Lives {
-        get => _lives;
-        set => _lives = value;
-    }
-
-    uint Briks = 4;
+    private uint _briks = 4;
     private bool _gameOver = false;
 
-    private void Awake()
+    private Text _scoreText;
+    private Text _livesText;
+    private Text _getReadyText;
+
+
+    private uint _score;
+    private uint Score 
     {
-        if (_instance == null)
+        get => _score;
+        set 
         {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
+            if(_score != value)
+            {
+                _score = value;
+                if(_score == _briks)
+                {
+                    OnPlayerWin();
+                }
+            }
         }
     }
 
-    private void Start()
+    private uint _lives;
+    private uint Lives 
     {
-        // NOTE: this is a workaround only while GamePlay is not injected.
-        Zenject.SceneContext context = FindObjectOfType<Zenject.SceneContext>();
-        _ball = context.Container.Resolve<IBallController>(); 
-        IGameConfig config = context.Container.Resolve<IGameConfig>();
-        _player = context.Container.Resolve<IPlayerController>();
+        get => _lives;
+        set 
+        {
+            if(_lives != value)
+            {
+                _lives = value;
+                if(_lives == 0)
+                {
+                    OnPlayerLose();
+                }
+            }
+        }
+    }
+
+    private Action _onPlayerWin;
+    public Action OnPlayerWin {
+        get => _onPlayerWin;
+        set => _onPlayerWin = value;
+    }
+
+    private Action _onPlayerLose;
+    public Action OnPlayerLose {
+        get => _onPlayerLose;
+        set => _onPlayerLose = value;
+    }
+
+    public GamePlay(
+        IBallController ball, 
+        IPlayerController player, 
+        IGameConfig config,
+        IGlobalCoroutineDispatcher dispatcher,
+        [Inject(Id="score")] Text scoreText, 
+        [Inject(Id="lives")] Text livesText, 
+        [Inject(Id="ready")] Text getReadyText)
+    {
+        _ball = ball;
+        _player = player;
+        _config = config;
+        _dispatcher = dispatcher;
+        _scoreText = scoreText;
+        _livesText = livesText;
+        _getReadyText = getReadyText;
+
+        OnPlayerWin += Win;
+        OnPlayerLose += Lose;
 
         SetupGame(config);
     }
 
     public void Goal()
     {
-        GetReadyLabel.enabled = true;
+        _getReadyText.enabled = true;
         
         var pos1 = _player.GetPlayerPosition();
         pos1.x = 0f;
@@ -68,17 +100,40 @@ public class GamePlay : MonoBehaviour
         _ball.SetPosition(Vector3.zero);
         _ball.SetVelocity(Vector2.zero);
 
-        ScoreLabel.text = GamePlay.Instance.Score.ToString();
-        LivesLabel.text = GamePlay.Instance._lives.ToString();
+        _scoreText.text = _score.ToString();
+        _livesText.text = _lives.ToString();
 
-        StartCoroutine(StartGame());
+        _dispatcher.Dispatch(StartGame());
+    }
+
+    public void IncrementScore()
+    {
+        _score++;
+    }
+
+    public void LoseLife()
+    {
+        _lives--;
+    }
+    
+
+    public void Win()
+    {
+        SceneManager.LoadScene("Win");
+        _gameOver = true;
+    }
+
+    public void Lose()
+    {
+        SceneManager.LoadScene("Lose");
+        _gameOver = true;
     }
 
     private void SetupGame(IGameConfig config)
     {
-        Score = 0;
+        _briks = 4;
+        _score = 0;
         _lives = config.Lives;
-        Briks = 4;
 
         Goal();
     }
@@ -87,38 +142,8 @@ public class GamePlay : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        GetReadyLabel.enabled = false;
+        _getReadyText.enabled = false;
         _gameOver = false;
         _ball.Kick();
-    }
-
-    private void Update()
-    {
-#if true //debug commands
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            _lives = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.W))
-        {
-            Score = Briks;
-        }
-#endif
-
-        if (_gameOver) return;
-
-        ScoreLabel.text = GamePlay.Instance.Score.ToString();
-        LivesLabel.text = GamePlay.Instance._lives.ToString();
-
-        if (Score == Briks)
-        {
-            SceneManager.LoadScene("Win");
-            _gameOver = true;
-        }
-        else if (_lives == 0)
-        {
-            SceneManager.LoadScene("Lose");
-            _gameOver = true;
-        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 public class PlayerInputListener : MonoBehaviour, IPlayerInputListener
 {
@@ -21,6 +22,18 @@ public class PlayerInputListener : MonoBehaviour, IPlayerInputListener
 			moveDirection = value;
 		}
 	}
+
+#if true // For Debug commands to work
+
+	private IGamePlay _gamePlay;
+
+	[Inject]
+	private void Construct(IGamePlay gamePlay)
+	{
+		_gamePlay = gamePlay;
+	}
+
+#endif
    
 	private void Start()
 	{
@@ -31,18 +44,26 @@ public class PlayerInputListener : MonoBehaviour, IPlayerInputListener
     {
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-        	Debug.LogWarning("[Update] Input left");
             MoveDirection = Vector2.left;
         }
         else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-        	Debug.LogWarning("[Update] Input right");
             MoveDirection = Vector2.right;
         }
         else
         {
-        	Debug.LogWarning("[Update] Input zero");
             MoveDirection = Vector2.zero;
         }
+
+#if true //debug commands
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            _gamePlay.Lose();
+        }
+        else if (Input.GetKeyDown(KeyCode.W))
+        {
+            _gamePlay.Win();
+        }
+#endif
     }
 }

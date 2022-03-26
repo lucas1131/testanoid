@@ -7,6 +7,6 @@ public class TopScore : MonoBehaviour
     
     private void Awake()
     {
-        Label.text += GamePlay.Instance.Score.ToString();
+        // Label.text += GamePlay.Instance.Score.ToString();
     }
 }

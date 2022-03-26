@@ -8,7 +8,8 @@ public class BallController : IBallController
     private IGameConfig _gameConfig;
 
     [Inject]
-    public BallController(IBallRigidbodyGetter ballGetter, 
+    public BallController(
+        IBallRigidbodyGetter ballGetter, 
         IBallPositioner ballPositioner, 
         IGameConfig gameConfig)
     {

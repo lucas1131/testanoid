@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameConfig")]
+[CreateAssetMenu(fileName="GameConfig")]
 [ExecuteInEditMode]
 public class GameConfig : ScriptableObject, IGameConfig
 {
