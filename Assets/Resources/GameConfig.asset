@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   _ballMaxSpeed: 8
-  _ballMinSpeed: 3
+  _ballMinSpeed: 4
+  _ballAngleMax: 5.92
+  _ballAngleMin: 3.5
   _playerSpeed: 5
   _lives: 3

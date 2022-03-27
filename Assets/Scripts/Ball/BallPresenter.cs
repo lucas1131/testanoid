@@ -11,4 +11,9 @@ public class BallPresenter : MonoBehaviour, IBallRigidbodyGetter, IBallPositione
         get => gameObject.transform.position;
         set => gameObject.transform.position = value;
     }
+    
+    public Vector3 TransformDirection(Vector3 direction)
+    {
+        return gameObject.transform.TransformDirection(direction.normalized);
+    }
 }

@@ -139,7 +139,7 @@ public class GamePlay : IGamePlay
 
     private IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         _getReadyText.enabled = false;
         _ball.Kick();

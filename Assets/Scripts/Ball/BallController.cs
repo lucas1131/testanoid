@@ -20,7 +20,11 @@ public class BallController : IBallController
     
     public void Kick()
     {
-        var direction = Random.insideUnitCircle.normalized;
+        var randomAngle = Random.Range(_gameConfig.BallAngleMin, _gameConfig.BallAngleMax);
+        var direction = GetDirectionInCone(1f, randomAngle);
+
+        direction = _ballPositioner.TransformDirection(direction).normalized;
+
         var speed = Random.Range(_gameConfig.BallMinSpeed, _gameConfig.BallMaxSpeed);
         _ball.velocity = direction * speed;
     }
@@ -35,4 +39,8 @@ public class BallController : IBallController
         _ballPositioner.Position = position;
     }
 
+    private Vector2 GetDirectionInCone(float radius, float angle)
+    {
+        return new Vector2(radius * Mathf.Cos(angle), radius * Mathf.Sin(angle));
+    }
 }
