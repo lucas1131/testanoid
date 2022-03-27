@@ -9,6 +9,7 @@ public class GameConfig : ScriptableObject, IGameConfig
     [SerializeField] [Range(0f, 2*Mathf.PI)] private float _ballAngleMax = 5f;
     [SerializeField] [Range(0f, 2*Mathf.PI)] private float _ballAngleMin = 5f;
     [SerializeField] [Range(3f, 8f)] private float _playerSpeed = 5f;
+    [SerializeField] private float _gameWaitTime = 3f;
     [SerializeField] private uint _lives = 3;
 
     public float BallMaxSpeed => _ballMaxSpeed;
@@ -16,6 +17,7 @@ public class GameConfig : ScriptableObject, IGameConfig
     public float BallAngleMax => _ballAngleMax;
     public float BallAngleMin => _ballAngleMin;
     public float PlayerSpeed => _playerSpeed;
+    public float GameWaitTime => _gameWaitTime;
     public uint Lives => _lives;
 
     private void OnValidate()
@@ -23,6 +25,11 @@ public class GameConfig : ScriptableObject, IGameConfig
         if(_ballMinSpeed > _ballMaxSpeed)
         {
             _ballMinSpeed = _ballMaxSpeed;
+        }
+
+        if(_gameWaitTime < 0f)
+        {
+            _gameWaitTime = 0f;
         }
     }
 }

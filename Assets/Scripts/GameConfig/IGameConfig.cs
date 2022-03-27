@@ -6,4 +6,5 @@ public interface IGameConfig
     float BallAngleMax { get; }
     float PlayerSpeed { get; }
     uint Lives { get; }
+    float GameWaitTime { get; }
 }
