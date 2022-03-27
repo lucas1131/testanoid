@@ -17,4 +17,5 @@ MonoBehaviour:
   _ballAngleMax: 5.92
   _ballAngleMin: 3.5
   _playerSpeed: 5
+  _gameWaitTime: 3
   _lives: 3
