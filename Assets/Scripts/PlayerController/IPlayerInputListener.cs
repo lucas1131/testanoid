@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IPlayerInputListener
 {
-	Action<Vector2> OnMovementDirectionChanged { get; set; }
+    Action<Vector2> OnMovementDirectionChanged { get; set; }
 }

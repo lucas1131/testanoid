@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IPlayerCollisionListener
 {
-	Action<Collision2D> OnPlayerCollisionEnter { get; set; }
+    Action<Collision2D> OnPlayerCollisionEnter { get; set; }
 }

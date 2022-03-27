@@ -16,9 +16,9 @@ public class GameConfig : ScriptableObject, IGameConfig
 
     private void OnValidate()
     {
-    	if(_ballMinSpeed > _ballMaxSpeed)
-    	{
-    		_ballMinSpeed = _ballMaxSpeed;
-    	}
+        if(_ballMinSpeed > _ballMaxSpeed)
+        {
+            _ballMinSpeed = _ballMaxSpeed;
+        }
     }
 }

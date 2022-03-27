@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IGlobalCoroutineDispatcher
 {
-	Coroutine Dispatch(IEnumerator coroutine);
+    Coroutine Dispatch(IEnumerator coroutine);
 }

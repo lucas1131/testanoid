@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IPlayerRigidbodyGetter
 {
-	Rigidbody2D Player { get; }
+    Rigidbody2D Player { get; }
 }

@@ -4,22 +4,22 @@ using Zenject;
 public class DebugCommands : MonoBehaviour
 {
 #if true //debug commands
-	private IGamePlay _gamePlay;
+    private IGamePlay _gamePlay;
 
-	[Inject]
-	private void Construct(IGamePlay gamePlay)
-	{
-		_gamePlay = gamePlay;
-	}
+    [Inject]
+    private void Construct(IGamePlay gamePlay)
+    {
+        _gamePlay = gamePlay;
+    }
 
-	private void Update()
-	{
+    private void Update()
+    {
 
-		if(!_gamePlay.GameIsRunning)
-		{
-			return;
-		}
-		
+        if(!_gamePlay.GameIsRunning)
+        {
+            return;
+        }
+        
         if (Input.GetKeyDown(KeyCode.Q))
         {
             _gamePlay.Lose();
@@ -28,6 +28,6 @@ public class DebugCommands : MonoBehaviour
         {
             _gamePlay.Win();
         }
-	}
+    }
 #endif
 }

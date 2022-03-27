@@ -3,18 +3,18 @@ using UnityEngine.SceneManagement;
 
 public class GameInitializer : MonoBehaviour
 {
-	[SerializeField] private GameConfig _gameConfig;
+    [SerializeField] private GameConfig _gameConfig;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-        	StartGame();
+            StartGame();
         }
     }
 
     private void StartGame()
     {
-    	SceneManager.LoadScene("Gameplay");
+        SceneManager.LoadScene("Gameplay");
     }
 }

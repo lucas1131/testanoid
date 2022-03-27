@@ -7,13 +7,13 @@ public class TopScore : MonoBehaviour
     [SerializeField] private Text ScoreText;
     private IScoreController _score;
 
-	[Inject]
-	private void Construct(IScoreController score)
-	{
-		_score = score;
+    [Inject]
+    private void Construct(IScoreController score)
+    {
+        _score = score;
 
-		UpdateScoreText();
-	}
+        UpdateScoreText();
+    }
     
     private void UpdateScoreText()
     {

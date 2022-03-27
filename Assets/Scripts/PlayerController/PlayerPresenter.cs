@@ -19,6 +19,6 @@ public class PlayerPresenter : MonoBehaviour, IPlayerRigidbodyGetter, IPlayerPos
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-    	OnPlayerCollisionEnter(collision);
+        OnPlayerCollisionEnter(collision);
     }
 }

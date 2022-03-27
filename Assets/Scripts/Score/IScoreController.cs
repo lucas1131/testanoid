@@ -1,5 +1,5 @@
 public interface IScoreController
 {
-	uint Score { get; set; }
-	string ToString();
+    uint Score { get; set; }
+    string ToString();
 }
